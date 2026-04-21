@@ -7,4 +7,5 @@ obj/
 .vs/
 playwright-report/
 test-results/
+node_modules/
 
