@@ -1,72 +1,54 @@
 # MinhasFinancas.Tests
 
-Projeto de testes automatizados para validação das principais regras de negócio do sistema *Minhas Finanças*, conforme solicitado no teste técnico.
-
----
+Projeto de testes automatizados criado para validar as principais regras de negócio do sistema *Minhas Finanças*, conforme solicitado no teste técnico.
 
 ## Objetivo
 
-Validar o comportamento do sistema *sem alterar o código da aplicação*, com foco nas regras de negócio críticas:
+Validar o comportamento da aplicação *sem alterar o código-fonte original*, com foco nas regras de negócio descritas no enunciado.
 
-- Menor de idade não pode registrar receitas
-- Categoria só pode ser usada conforme sua finalidade
-- Exclusão em cascata de transações ao excluir pessoa
+Regras priorizadas:
 
----
+- menor de idade não pode registrar receitas
+- categoria só pode ser usada conforme sua finalidade
+- exclusão em cascata de transações ao excluir pessoa
 
-##  Estrutura de Testes
+## Tecnologias utilizadas
 
-### Unit Tests
+- *.NET 9*
+- *C#*
+- *xUnit*
+- *Entity Framework Core InMemory* para testes de integração
 
-Testes rápidos e isolados, focados nas regras de negócio das entidades.
+## Estrutura da pirâmide de testes
 
-*Arquivos:*
+### Testes unitários
+
+Responsáveis por validar regras de negócio diretamente nas entidades, de forma rápida e isolada.
+
+Arquivos:
 - unit/PessoaTests.cs
 - unit/TransacaoTests.cs
 
-*Cobertura:*
-- Pessoa maior de idade
-- Pessoa menor de idade
-- Pessoa com exatamente 18 anos
-- Menor de idade não pode registrar receita
-- Categoria não permite tipo incompatível
+Cobertura:
+- pessoa maior de idade
+- pessoa menor de idade
+- pessoa com exatamente 18 anos
+- menor de idade não pode registrar receita
+- categoria não permite tipo incompatível
 
----
+### Testes de integração
 
-### Integration Tests
+Responsáveis por validar comportamentos integrados entre entidades e persistência.
 
-Testes focados no comportamento integrado entre entidades e persistência de dados.
-
-*Arquivos:*
+Arquivos:
 - integration/TransacaoIntegrationTests.cs
 - integration/PessoaIntegrationTests.cs
 
-*Cobertura:*
-- Criação válida de transação
-- Bloqueio de receita para menor de idade
-- Bloqueio de despesa em categoria de receita
-- Exclusão em cascata ao excluir pessoa
-
----
-
-## Bug Identificado
-
-Durante a execução dos testes de integração, foi identificado o seguinte problema:
-
-- Ao excluir uma pessoa, *as transações relacionadas não são removidas*
-- Resultado: dados órfãos permanecem no banco
-
-*Comportamento esperado:*
-- Exclusão em cascata das transações vinculadas à pessoa
-
-*Comportamento atual:*
-- As transações continuam persistidas após a exclusão
-
-Este comportamento foi validado através do teste:
-
-- PessoaIntegrationTests.Deve_remover_transacoes_quando_pessoa_e_excluida
-
----
+Cobertura:
+- criação válida de transação
+- bloqueio de receita para menor de idade
+- bloqueio de despesa em categoria de receita
+- validação da exclusão em cascata ao excluir pessoa
 
 ## Como rodar os testes
 
