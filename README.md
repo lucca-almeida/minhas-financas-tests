@@ -1,58 +1,144 @@
-# MinhasFinancas.Tests
+# Minhas Finanças — Testes Automatizados
 
-Projeto de testes automatizados criado para validar as principais regras de negócio do sistema *Minhas Finanças*, conforme solicitado no teste técnico.
+Este repositório contém a implementação de testes automatizados para validação das principais regras de negócio do sistema Minhas Finanças, conforme solicitado no teste técnico.
+
+---
 
 ## Objetivo
 
-Validar o comportamento da aplicação *sem alterar o código-fonte original*, com foco nas regras de negócio descritas no enunciado.
+Validar o comportamento do sistema sem alterar o código da aplicação, com foco nas regras de negócio críticas:
 
-Regras priorizadas:
+- Menor de idade não pode registrar receitas
+- Categoria deve respeitar seu tipo (receita / despesa / ambas)
+- Exclusão em cascata de transações ao excluir pessoa
 
-- menor de idade não pode registrar receitas
-- categoria só pode ser usada conforme sua finalidade
-- exclusão em cascata de transações ao excluir pessoa
+---
 
-## Tecnologias utilizadas
+## Estratégia de Testes
 
-- *.NET 9*
-- *C#*
-- *xUnit*
-- *Entity Framework Core InMemory* para testes de integração
+A abordagem segue o conceito de pirâmide de testes, priorizando confiabilidade e velocidade.
 
-## Estrutura da pirâmide de testes
+Testes Unitários
+Validação isolada das regras de negócio, execução rápida e sem dependência externa.
 
-### Testes unitários
+Testes de Integração
+Validação entre entidades e persistência utilizando banco em memória.
 
-Responsáveis por validar regras de negócio diretamente nas entidades, de forma rápida e isolada.
+Testes de Frontend (Vitest)
+Validação da estrutura da aplicação React e verificação de elementos HTML essenciais.
 
-Arquivos:
-- unit/PessoaTests.cs
-- unit/TransacaoTests.cs
+Testes End-to-End (Playwright)
+Simulação do comportamento real do usuário com a aplicação em execução.
 
-Cobertura:
-- pessoa maior de idade
-- pessoa menor de idade
-- pessoa com exatamente 18 anos
-- menor de idade não pode registrar receita
-- categoria não permite tipo incompatível
+---
 
-### Testes de integração
+## Tecnologias Utilizadas
 
-Responsáveis por validar comportamentos integrados entre entidades e persistência.
+Backend
+- .NET 9
+- xUnit
+- Entity Framework Core (InMemory)
 
-Arquivos:
-- integration/TransacaoIntegrationTests.cs
-- integration/PessoaIntegrationTests.cs
+Frontend
+- React + TypeScript
+- Vitest
+- Playwright
 
-Cobertura:
-- criação válida de transação
-- bloqueio de receita para menor de idade
-- bloqueio de despesa em categoria de receita
-- validação da exclusão em cascata ao excluir pessoa
+---
 
-## Como rodar os testes
+## Estrutura do Projeto
 
-No terminal, dentro da pasta do projeto:
+MinhasFinancas.Tests
+├── unit
+│   ├── PessoaTests.cs
+│   └── TransacaoTests.cs
+├── integration
+│   ├── PessoaIntegrationTests.cs
+│   └── TransacaoIntegrationTests.cs
+├── frontend-tests
+│   ├── vitest
+│   │   ├── app.test.ts
+│   │   ├── app.render.test.ts
+│   │   └── app.ui.test.ts
+│   ├── e2e
+│   │   └── app.e2e.spec.ts
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── playwright.config.ts
+├── docs
+│   └── bugs.md
+└── README.md
 
-```bash
+---
+
+## Como Rodar os Testes
+
+Backend (unitários e integração)
+
 dotnet test
+
+---
+
+Frontend — Vitest
+
+cd frontend-tests
+npx vitest run
+
+---
+
+Frontend — E2E (Playwright)
+
+1. Subir o frontend
+
+cd ExameDesenvolvedorDeTestes/web
+npm install
+npm run dev
+
+2. Rodar os testes
+
+cd frontend-tests
+npx playwright test
+
+---
+
+## Bugs Encontrados
+
+Os bugs identificados estão documentados em:
+
+docs/bugs.md
+
+Bug identificado:
+
+- Exclusão de pessoa não remove transações associadas, violando a regra de exclusão em cascata
+
+---
+
+## Cobertura de Regras de Negócio
+
+Menor de idade não pode ter receita: validado
+Categoria respeita tipo: validado
+Exclusão em cascata: bug identificado
+
+---
+
+## Decisões Técnicas
+
+- O código da aplicação não foi alterado, conforme exigido
+- Os testes foram escritos para evidenciar comportamentos reais
+- Backend recebeu maior foco por concentrar as regras de negócio
+- Frontend validado com testes estruturais (Vitest) e testes de execução real (Playwright)
+
+---
+
+## Considerações Finais
+
+A solução cobre as principais regras de negócio utilizando diferentes níveis de testes.
+
+A abordagem prioriza clareza, organização, foco nas regras críticas e identificação de falhas reais.
+
+---
+
+## Observação
+
+Este repositório contém apenas os testes, conforme solicitado no enunciado.
+O código da aplicação original não foi incluído nem modificado.
